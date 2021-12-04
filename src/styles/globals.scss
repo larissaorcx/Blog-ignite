@@ -2,7 +2,16 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background-color: black;
 }
 
-// TODO
+:root {
+  --pink: #ff57b2;
+  --gray-300: #bbbbbb;
+  --gray-200: #d7d7d7;
+  --gray-100: #f8f8f8;
+  --background: #1a1d23;
+}
+
+body {
+  background: var(--background);
+}
