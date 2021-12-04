@@ -1,18 +1,87 @@
 .content {
   margin-left: 372px;
-  width: 700px;
-  height: 108px;
   left: 370px;
   top: 170px;
+  background: var(--background);
 
   a {
     text-decoration: none;
-    color: white;
+    line-height: 46px;
+
+    .gridContainer {
+      display: grid;
+      grid-template-areas: 'iconCalendar data iconUser author';
+      grid-template-columns: 30px 0.2fr 30px 1fr;
+      color: var(--gray-200);
+      align-items: center;
+      // justify-content: center;
+    }
+
+    strong {
+      padding-bottom: 8px;
+      font-family: Inter;
+      font-weight: bold;
+      font-size: 28px;
+
+      text-align: justify;
+      letter-spacing: -0.5px;
+      color: var(--gray-100);
+    }
+
+    h3 {
+      font-family: Inter;
+      font-weight: normal;
+      font-size: 18px;
+      line-height: 22px;
+
+      text-align: justify;
+      color: var(--gray-200);
+    }
+
+    .iconCalendar {
+      grid-area: iconCalendar;
+    }
+
+    time {
+      grid-area: data;
+      font-family: Inter;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      padding-top: 5px;
+    }
+
+    .iconruser {
+      grid-area: iconUser;
+    }
+
+    p {
+      display: inline;
+      left: 23%;
+      top: 82.41%;
+      bottom: 1.85%;
+
+      font-family: Inter;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+
+      padding-top: 5px;
+    }
   }
 }
 
 .button {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+
+  text-align: justify;
   margin-left: 372px;
-  color: pink;
+  color: var(--pink);
   border: none;
+  padding-top: 1rem;
+  background: var(--background);
+  cursor: pointer;
 }

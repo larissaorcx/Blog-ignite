@@ -1,6 +1,11 @@
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import Prismic from '@prismicio/client';
+import { FiCalendar, FiUser } from 'react-icons/fi';
+
+import { format } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
+import { useState } from 'react';
 import Header from '../components/Header';
 
 import { getPrismicClient } from '../services/prismic';
@@ -28,6 +33,18 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps): JSX.Element {
+  const [loadMorePost, setLoadMorePost] = useState<Post[]>([]);
+
+  const [nextPage, setNextPage] = useState<string>();
+
+  async function loadMorePostsButton(): Promise<void> {
+    const load = await fetch(postsPagination.next_page).then(response =>
+      response.json()
+    );
+
+    setLoadMorePost([...load.results]);
+    setNextPage(load.next_page);
+  }
   return (
     <>
       <Header />
@@ -37,15 +54,30 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
             <Link href={`/postuid/${post.uid}`} key={post.uid}>
               <a>
                 <strong>{post.data.title}</strong>
-                <p>{post.data.subtitle}</p>
-                <time>{post.first_publication_date}</time>
-                <p>{post.data.author}</p>
+                <h3>{post.data.subtitle}</h3>
+                <div className={styles.gridContainer}>
+                  <FiCalendar className={styles.iconCalendar} />
+                  <time>
+                    {format(new Date(post?.first_publication_date), 'PP', {
+                      locale: ptBR,
+                    })}
+                  </time>
+                  <FiUser className={styles.iconruser} />
+                  <p>{post.data.author}</p>
+                </div>
               </a>
             </Link>
           ))}
         </div>
-        {postsPagination.next_page === null ? null : (
-          <button type="button">Carregar mais posts</button>
+
+        {nextPage === null ? null : (
+          <button
+            type="button"
+            className={styles.button}
+            onClick={loadMorePostsButton}
+          >
+            Carregar mais posts
+          </button>
         )}
       </main>
     </>
@@ -68,13 +100,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const results = postsResponse.results.map(post => {
     return {
       uid: post.uid,
-      first_publication_date: new Date(
-        post.first_publication_date
-      ).toLocaleDateString('pt-BR', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric',
-      }),
+      first_publication_date: post.first_publication_date,
       data: {
         title: post.data.title,
         subtitle: post.data.subtitle,

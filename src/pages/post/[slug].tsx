@@ -37,9 +37,28 @@ interface PostProps {
 //   // TODO
 // };
 
-// export const getStaticProps = async context => {
-//   const prismic = getPrismicClient();
-//   const response = await prismic.getByUID(TODO);
+export const getStaticProps = async context => {
+  const { slug } = context;
 
-//   // TODO
-// };
+  const prismic = getPrismicClient();
+  const response = await prismic.getByUID('posts', String(slug), {});
+
+  const post = {
+    id: response.id,
+    updateAt: response.first_publication_date,
+    data: {
+      title: response.data.title,
+      subtitle: response.data.subtitle,
+      banner: {
+        url: response.data.banner,
+      },
+    },
+    author: response.data.author,
+  };
+
+  return {
+    props: {
+      post,
+    },
+  };
+};
