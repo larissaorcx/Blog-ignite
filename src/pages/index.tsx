@@ -33,16 +33,16 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps): JSX.Element {
-  const [loadMorePost, setLoadMorePost] = useState<Post[]>([]);
+  const [loadMorePost, setLoadMorePost] = useState<Post[]>(
+    postsPagination.results
+  );
 
-  const [nextPage, setNextPage] = useState<string>();
+  const [nextPage, setNextPage] = useState<string>(postsPagination.next_page);
 
   async function loadMorePostsButton(): Promise<void> {
-    const load = await fetch(postsPagination.next_page).then(response =>
-      response.json()
-    );
+    const load = await fetch(nextPage).then(response => response.json());
 
-    setLoadMorePost([...load.results]);
+    setLoadMorePost([...loadMorePost, ...load.results]);
     setNextPage(load.next_page);
   }
   return (
@@ -50,7 +50,7 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
       <Header />
       <main>
         <div className={styles.content}>
-          {postsPagination.results.map(post => (
+          {loadMorePost?.map(post => (
             <Link href={`/postuid/${post.uid}`} key={post.uid}>
               <a>
                 <strong>{post.data.title}</strong>
@@ -70,7 +70,7 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
           ))}
         </div>
 
-        {nextPage === null ? null : (
+        {nextPage && (
           <button
             type="button"
             className={styles.button}
