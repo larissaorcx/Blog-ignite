@@ -51,7 +51,7 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
       <main>
         <div className={styles.content}>
           {loadMorePost?.map(post => (
-            <Link href={`/postuid/${post.uid}`} key={post.uid}>
+            <Link href={`/post/${post.uid}`} key={post.uid}>
               <a>
                 <strong>{post.data.title}</strong>
                 <h3>{post.data.subtitle}</h3>
