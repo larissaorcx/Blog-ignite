@@ -1,1 +1,117 @@
-// TODO
+.banner {
+  display: block;
+
+  width: 100%;
+}
+.content {
+  width: 721px;
+  height: 1942px;
+
+  margin: 0 auto;
+
+  .gridContainer {
+    display: grid;
+    grid-template-areas: 'iconCalendar data iconUser author';
+    grid-template-columns: 30px 0.3fr 30px 1fr;
+    color: var(--gray-200);
+    align-items: center;
+    margin-bottom: 64px;
+    margin-top: 25px;
+  }
+
+  .title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    padding-bottom: 8px;
+    font-family: Inter;
+    font-weight: bold;
+    font-size: 28px;
+    margin-top: 67px;
+
+    text-align: justify;
+    letter-spacing: -0.5px;
+    color: var(--gray-100);
+  }
+
+  .subTitle {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 66px;
+
+    font-family: Inter;
+    font-weight: bold;
+    font-size: 28px;
+
+    text-align: justify;
+    letter-spacing: -0.5px;
+    color: var(--gray-100);
+  }
+
+  .iconCalendar {
+    grid-area: iconCalendar;
+  }
+
+  .time {
+    grid-area: data;
+    font-family: Inter;
+    font-weight: normal;
+    font-size: 14px;
+    padding-top: 5px;
+  }
+
+  .iconruser {
+    grid-area: iconUser;
+  }
+
+  .subContent {
+    text-align: justify;
+
+    margin-bottom: 64px;
+    line-height: 25px;
+    font-family: Inter;
+    font-weight: normal;
+    font-size: 14px;
+    font-weight: 400;
+
+    letter-spacing: -0.5px;
+    padding-top: 5px;
+    color: var(--gray-200);
+  }
+
+  .author {
+    display: inline;
+    font-family: Inter;
+    font-weight: normal;
+    font-size: 14px;
+
+    letter-spacing: -0.5px;
+
+    padding-top: 5px;
+    color: var(--gray-200);
+  }
+}
+.load {
+  color: var(--pink);
+  font-size: 20px;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  margin-left: 1rem;
+  margin-top: 20rem;
+
+  // position: relative;
+  // animation: ampulheta 10s infinite;
+
+  // @keyframes ampulheta {
+  //   from {
+  //     rotate: 180deg;
+  //   }
+  //   to {
+  //     rotate: -180deg;
+  //   }
+  // }
+}

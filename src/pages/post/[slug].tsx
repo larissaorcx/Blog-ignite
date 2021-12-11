@@ -83,14 +83,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
   );
 
   return {
-    paths: [{ params: { slug: String(posts.results.map(post => post.uid)) } }],
+    paths: posts.results.map(post => ({
+      params: { slug: post.uid },
+    })),
     fallback: true,
   };
 };
 
 export const getStaticProps: GetStaticProps = async context => {
-  // console.log('contexto', context);
-
   const { slug } = context.params;
 
   const prismic = getPrismicClient();
