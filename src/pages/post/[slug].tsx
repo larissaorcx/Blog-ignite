@@ -3,9 +3,10 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import React from 'react';
 import Prismic from '@prismicio/client';
 import { useRouter } from 'next/router';
-import { FiCalendar, FiUser } from 'react-icons/fi';
+import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
 import { ptBR } from 'date-fns/locale';
 import { format } from 'date-fns';
+import { RichText } from 'prismic-dom';
 import Header from '../../components/Header';
 
 import { getPrismicClient } from '../../services/prismic';
@@ -15,8 +16,10 @@ import styles from './post.module.scss';
 
 interface Post {
   first_publication_date: string | null;
+  uid: string;
   data: {
     title: string;
+    subtitle: string;
     banner: {
       url: string;
     };
@@ -37,8 +40,19 @@ interface PostProps {
 export default function Post({ post }: PostProps): JSX.Element {
   const router = useRouter();
 
+  const readingTime = Math.ceil(
+    post?.data?.content?.reduce((previous, current) => {
+      const headingNumberOfWords = current.heading.split(' ').length;
+      const bodyNumberOfWords = RichText.asText(current.body)
+        .replace(/\n\n|\r?\n|\r/g, ' ')
+        .split(' ').length;
+
+      return previous + (headingNumberOfWords + bodyNumberOfWords) / 200;
+    }, 0)
+  );
+
   if (router.isFallback) {
-    return <div className={styles.load}> Carregando...⌛</div>;
+    return <div className={styles.load}> Carregando...</div>;
   }
   return (
     <>
@@ -55,16 +69,21 @@ export default function Post({ post }: PostProps): JSX.Element {
           </time>
           <FiUser className={styles.iconruser} />
           <p className={styles.author}>{post.data.author}</p>
+          <FiClock />
+          <p>{readingTime} min</p>
         </div>
         <div>
           {post.data.content.map(content => (
             <>
-              <h3 className={styles.subTitle} key={content.heading}>
+              <h3 key={content.heading} className={styles.subTitle}>
                 {content.heading}
               </h3>
-              <p className={styles.subContent}>
-                {content.body.map(textos => textos.text)}
-              </p>
+              <div
+                className={styles.subContent}
+                dangerouslySetInnerHTML={{
+                  __html: RichText.asHtml(content.body),
+                }}
+              />
             </>
           ))}
         </div>
@@ -98,8 +117,10 @@ export const getStaticProps: GetStaticProps = async context => {
 
   const post = {
     first_publication_date: response.first_publication_date,
+    uid: response.uid,
     data: {
       title: response.data.title,
+      subtitle: response.data.subtitle,
       banner: {
         url: response.data.banner.url,
       },
